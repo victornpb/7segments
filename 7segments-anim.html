@@ -1,20 +1,78 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Untitled Document</title>
-<style type="text/css">
+<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="https://getbootstrap.com/dist/js/bootstrap.js"></script>
+<link type="text/css" rel="stylesheet" href="https://getbootstrap.com/dist/css/bootstrap.css"/>
+<title>7-segments Animation generator</title>
+<style>
+	
+body {
+  padding-top: 51px;  
+}
+.text-center {
+  padding-top: 20px;
+}
+.col-xs-12 {
+  background-color: #fff;
+}
+#sidebar {
+  height: 100%;
+  padding-right: 0;
+  padding-top: 20px;
+}
+#sidebar .nav {
+  width: 95%;
+}
+#sidebar li {
+  border:0 #f2f2f2 solid;
+  border-bottom-width:1px;
+}
+
+/* collapsed sidebar styles */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -41.6%;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -41.6%;
+  }
+  .row-offcanvas-right.active {
+    right: 41.6%;
+  }
+  .row-offcanvas-left.active {
+    left: 41.6%;
+  }
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 41.6%;
+  }
+  #sidebar {
+    padding-top:0;
+  }
+}
+
 .display7{
 	display:inline-block;
 	background-color: #000;
 	padding: 1em;
 	
-	font:Monaco, "Panic Sans", Consolas, "Courier New", monospace;
-	font-size:9px;
-	color:transparent;
+	font: Monaco, "Panic Sans", Consolas, "Courier New", monospace;
+	font-size: 12pt;
+	color: transparent;
 }
 .display7:hover{
-	color: black;
+	color: #666;
 }
 .display7 .a
 .display7 .b,
@@ -26,9 +84,12 @@
 	text-align: center;
 }
 .display7 div{
-	background-color: #111;
+	background-color: #121;
 	text-align: center;
 	cursor: pointer;
+}
+.display7 div:hover{
+	outline: 1px outset #0F0;
 }
 .a, .g, .g{
 	width: 4em;
@@ -53,11 +114,31 @@
 textarea{
 	text-align: left;
 }
-</style></head>
-
+</style>
+</head>
 <body>
 
-<div id="panel">
+  <div class="page-container">
+  
+	<!-- top navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+       <div class="container">
+    	<div class="navbar-header">
+           <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+           </button>
+           <a class="navbar-brand" href="#">7-segments Animation generator</a>
+    	</div>
+       </div>
+    </div>
+      
+    <div class="container">
+      
+      <div class="well">
+       
+
 	<div id="digit1" class="display7">
 	  <table>
 		<tr>
@@ -123,35 +204,78 @@ textarea{
 	<div>
 		<input id="dispData" type="text"><input type="button" value="WRITE" onclick="writeDisplay(dispData.value)"/>
 	</div>
-</div>
 
 
 
-<span id="animationPanel">
-	
-	<button onclick="pushB()">PUSH TO LIST</button>
-	<br />
-	<p>
-		<button onclick="play()">PLAY</button>
-		<button onclick="stop()">STOP</button>
-		<br />
-		<label>Interval <input type="number" id="speed" value="500"/></label><br />
-		<label>Repeat <input type="number" id="repeat" value="5"/></label>
-	</p>
-	
-	<textarea id="anim" rows="20" placeholder="">
-	</textarea>
-</span>
+      </div>
+		
+      <div class="panel panel-default">
+       	<div class="panel-heading">Title</div>
+       	<div class="panel-body">
+        
+		   <span id="animationPanel">
+			
+			<button onclick="pushB()">PUSH TO LIST</button>
+			<br />
+			<p>
+				<button onclick="play()">PLAY</button>
+				<button onclick="stop()">STOP</button>
+				<br />
+				<label>Interval <input type="number" id="speed" value="500"/></label><br />
+				<label>Repeat <input type="number" id="repeat" value="5"/></label>
+			</p>
+			
+			<textarea id="anim" rows="20" placeholder="">
+			</textarea>
+		</span>
+        
+        </div>
+      </div>
 
-<span id="storagePanel">
-	<input type="text" id="animName" placeholder="animation name"/>
-	<button onclick="saveAnim()">Save</button>
-	<br />
-	<button onclick="loadAnim()">Load</button>
-	<button onclick="deleteAnim()">Delete</button>
-	<br />
-	<select id="savedList" size="10" onchange="loadAnim()"></select>
-</span>
+      
+
+
+
+
+      <div class="panel panel-default">
+       <div class="panel-heading">Title</div>
+       <div class="panel-body">
+        
+        <span id="storagePanel">
+			<input type="text" id="animName" placeholder="animation name"/>
+			<button onclick="saveAnim()">Save</button>
+			<br />
+			<button onclick="loadAnim()">Load</button>
+			<button onclick="deleteAnim()">Delete</button>
+			<br />
+			<select id="savedList" size="10" onchange="loadAnim()"></select>
+		</span>
+
+        </div>
+      </div>
+
+
+
+
+
+      <div class="panel panel-default">
+       <div class="panel-heading">Title</div>
+       <div class="panel-body">
+        
+         <button onclick="generateCode()">Generate Code</button>
+          <br />
+         <textarea id="code" cols="80" rows="25"></textarea>
+        
+        </div>
+      </div>
+
+      
+  	</div><!--/.container-->
+</div><!--/.page-container-->
+
+
+
+
 
 <script type="text/javascript">
 var playing, t, d1, d2;
@@ -380,6 +504,6 @@ Display.prototype.getValue = function(value){
 	return byte.join('');
 }
 </script>
-  
 </body>
 </html>
+
