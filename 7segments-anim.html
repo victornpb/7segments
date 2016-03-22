@@ -108,8 +108,8 @@ body {
 }
 #animationPanel, #storagePanel{
 	display: inline-block;
-	border: 2px solid gray;
-	height:auto;
+	/*border: 2px solid gray;*/
+	height: 100%;
 }
 textarea{
 	text-align: left;
@@ -202,69 +202,75 @@ textarea{
 	<br />
 	
 	<div>
-		<input id="dispData" type="text"><input type="button" value="WRITE" onclick="writeDisplay(dispData.value)"/>
+		<input id="dispData" type="text"><button onclick="writeDisplay(dispData.value)"><i class="glyphicon glyphicon-arrow-up"></i> SET</button><br>
+		<button onclick="pushB()"><i class="glyphicon glyphicon-plus"></i> Add Frame</button>
 	</div>
 
 
 
       </div>
 		
+
+<div class="row">
+<div class="col-md-6">
       <div class="panel panel-default">
-       	<div class="panel-heading">Title</div>
+       	<div class="panel-heading"><i class="glyphicon glyphicon-film"></i> Animation
+	       	<span class="pull-right">
+	       		<input type="text" id="animName" placeholder="Animation Name"/>
+				<button onclick="saveAnim()"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+			</span>
+       	</div>
+
+       		
+
        	<div class="panel-body">
         
-		   <span id="animationPanel">
-			
-			<button onclick="pushB()">PUSH TO LIST</button>
-			<br />
 			<p>
-				<button onclick="play()">PLAY</button>
-				<button onclick="stop()">STOP</button>
-				<br />
-				<label>Interval <input type="number" id="speed" value="500"/></label><br />
-				<label>Repeat <input type="number" id="repeat" value="5"/></label>
+				<button onclick="play()"><i class="glyphicon glyphicon-play"></i> PLAY</button>
+				<button onclick="stop()"><i class="glyphicon glyphicon-stop"></i> STOP</button>
+				<span>
+					<label><i class="glyphicon glyphicon-dashboard"></i> Interval <input type="number" id="speed" value="250" size="3" style="width: 4em;" /></label> ms
+					<label><i class="glyphicon glyphicon-repeat"></i> Repeat <input type="number" id="repeat" value="5" size="2" style="width: 4em;"/></label> times
+				</span>
 			</p>
 			
-			<textarea id="anim" rows="20" placeholder="">
-			</textarea>
-		</span>
+			<textarea id="anim" rows="20" placeholder="Frames" style="width:100%;"></textarea>
+
+	
         
         </div>
       </div>
-
+</div>
       
 
 
 
-
+<div class="col-md-6">
       <div class="panel panel-default">
-       <div class="panel-heading">Title</div>
+       <div class="panel-heading"><i class="glyphicon glyphicon-inbox"></i> Saved Animations</div>
        <div class="panel-body">
-        
-        <span id="storagePanel">
-			<input type="text" id="animName" placeholder="animation name"/>
-			<button onclick="saveAnim()">Save</button>
-			<br />
-			<button onclick="loadAnim()">Load</button>
-			<button onclick="deleteAnim()">Delete</button>
-			<br />
-			<select id="savedList" size="10" onchange="loadAnim()"></select>
-		</span>
+
+			<p>
+				<button onclick="loadAnim()"><i class="glyphicon glyphicon-floppy-open"></i> Load</button>
+				<button onclick="deleteAnim()"><i class="glyphicon glyphicon-minus-sign"></i> Delete</button>
+			</p>
+			<select id="savedList" size="20" onchange="loadAnim()" style="width:100%;"></select>
+	
 
         </div>
       </div>
+     </div>
 
-
+</div>
 
 
 
       <div class="panel panel-default">
-       <div class="panel-heading">Title</div>
+       <div class="panel-heading"><i class="glyphicon glyphicon-apple"></i> Arduino Code
+       <button onclick="generateCode()" class="pull-right"><i class="glyphicon glyphicon-flash"></i>Generate Code</button> </div>
        <div class="panel-body">
-        
-         <button onclick="generateCode()">Generate Code</button>
-          <br />
-         <textarea id="code" cols="80" rows="25"></textarea>
+         
+         <textarea id="outputCode" cols="80" rows="25" style="width:100%;" placeholder="Click on the [Generate Code] button"></textarea>
         
         </div>
       </div>
@@ -278,8 +284,10 @@ textarea{
 
 
 <script type="text/javascript">
+
 var playing, t, d1, d2;
 var savedAnimations = {};
+
 function saveAnim(){
 	
 	var animObj = {
@@ -301,6 +309,7 @@ function saveAnim(){
 	
 	window.localStorage.setItem('savedAnimations', JSON.stringify(savedAnimations) );
 }
+
 function loadAnim(){
 	var a = savedAnimations[savedList.value];
 	animName.value = a.name;
@@ -308,6 +317,7 @@ function loadAnim(){
 	repeat.value = a.repeat;
 	anim.value = a.data;
 }
+
 function deleteAnim(){
 	if(savedList.value){
 		var a = savedAnimations[savedList.value];
@@ -324,9 +334,11 @@ function deleteAnim(){
 		window.localStorage.setItem('savedAnimations', JSON.stringify(savedAnimations) );
 	}
 }
+
 function pushB(){
 	anim.value += d1.getValue()+" "+d2.getValue()+"\n";
 }
+
 function play(){
 	
 	if(!playing==true){
@@ -503,6 +515,70 @@ Display.prototype.getValue = function(value){
 	
 	return byte.join('');
 }
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function toLowerCamelCase(str) {
+    return str.replace(/[^A-Za-z0-9]/g, ' ').replace(/^\w|[A-Z]|\b\w|\s+/g, function (match, index) {
+        if (+match === 0 || match === '-' || match === '.' ) {
+            return ""; // or if (/\s+/.test(match)) for white spaces
+        }
+        return index === 0 ? match.toLowerCase() : match.toUpperCase();
+    });
+}
+
+function generateCode(){
+
+	var segmentsNum,
+		framesNum;
+
+	var name = animName.value.replace(/[^\w\d]+/g, " ");
+		name = toLowerCamelCase(name);
+		name = capitalizeFirstLetter(name);
+
+	if(!name){ alert("Type a name for the animation"); animName.focus(); return; }
+
+	var animation = anim.value;
+
+	var frames = animation.split(/\n/);
+	frames = frames.filter(function(line){
+		return line.trim()!=="";
+	});
+
+
+	frames = frames.map(function(segments){
+		
+		var bytes = segments.split(/\s+/);
+		segmentsNum = bytes.length;
+
+		bytes = bytes.map(function(s){ return s?('B'+s):undefined; });
+		return bytes;
+	});
+	
+	
+	if(!segmentsNum){ alert("Add frames to the animation"); dispData.focus(); return; }
+		
+
+	var code = "const byte animation"+name+"[]["+segmentsNum+"] = {\n";
+
+	frames = frames.map(function(bytes){
+		bytes = bytes.join(', ');
+		if(bytes) return "    {"+bytes+"}";
+	});
+
+	code += frames.join(",\n");
+
+	code += '\n};';
+
+	
+	outputCode.value = code;
+	outputCode.focus();
+	outputCode.select();
+}
+
+
+
 </script>
 </body>
 </html>
