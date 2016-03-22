@@ -139,17 +139,7 @@ textarea{
 		<label>Repeat <input type="number" id="repeat" value="5"/></label>
 	</p>
 	
-	<textarea id="anim" rows="20">
-	1111110
-	0110000
-	1101101
-	1111001
-	0110011
-	1011011
-	1011111
-	1110000
-	1111111
-	1111011
+	<textarea id="anim" rows="20" placeholder="">
 	</textarea>
 </span>
 
@@ -269,15 +259,22 @@ window.onload=function(){
 		
 	//Load saved animations to memory
 	var storage = window.localStorage.getItem('savedAnimations');
+	
 	if(storage){
 		savedAnimations = JSON.parse(storage);
-		for(var a in savedAnimations){
-			var opt = document.createElement('option');
-			opt.innerHTML = a;
-			opt.value = a;
-			savedList.appendChild(opt);
-		}
 	}
+	else{
+		savedAnimations = {"filling bar":{"name":"filling bar","interval":"50","repeat":"5","data":"0001000 0001000\n0001001 0001001\n1001001 1001001\n1000001 1000001\n1000000 1000000\n0000000 0000000"},"rising sides":{"name":"rising sides","interval":"50","repeat":"5","data":"0001000 0001000\n0001100 0011000\n0001110 0111000\n1001110 1111000\n1000110 1110000\n1000010 1100000\n1000000 1000000\n0000000 0000000"},"rising dash":{"name":"rising dash","interval":"50","repeat":"5","data":"0001000 0001000\n0000001 0000001\n1000000 1000000\n0000000 0000000"},"rotating segment":{"name":"rotating segment","interval":"50","repeat":"5","data":"0000000 0001000\n0001000 0000000\n0000100 0000000\n0000010 0000000\n1000000 0000000\n0000000 1000000\n0000000 0100000\n0000000 0010000"},"drawing circle":{"name":"drawing circle","interval":"50","repeat":"5","data":"0000000 0001000\n0001000 0001000\n0001100 0001000\n0001110 0001000\n1001110 0001000\n1001110 1001000\n1001110 1101000\n1001110 1111000\n1001110 1110000\n1000110 1110000\n1000010 1110000\n1000000 1110000\n0000000 1110000\n0000000 0110000\n0000000 0010000\n0000000 0000000"},"spinner":{"name":"spinner","interval":"50","repeat":"5","data":"1000000 0001000\n0001000 1000000\n0000100 0100000\n0000010 0010000\n"},"spinner2":{"name":"spinner2","interval":"40","repeat":"5","data":"1000000 0001000\n1001000 1001000\n0001000 1000000\n0001100 1100000\n0000100 0100000\n0000110 0110000\n0000010 0010000\n1000010 0011000"},"cmd":{"name":"cmd","interval":"200","repeat":"5","data":"1000000 0001000\n0100000 0000100\n0010000 0000010\n0001000 1000000\n0000100 0100000\n0000001 0000001\n0000000 0000000\n0000010 0010000"},"command symbol":{"name":"command symbol","interval":"50","repeat":"5","data":"0000000 0010000\n0000000 0001000\n0000000 0000100\n0000000 0000010\n0000000 1000000\n0000000 0100000\n0000000 0000001\n0000001 0000000\n0000010 0000000\n1000000 0000000\n0100000 0000000\n0010000 0000000\n0001000 0000000\n0000100 0000000\n0000001 0000000\n0000000 0000001"},"fast blink UP":{"name":"fast blink UP","interval":"20","repeat":"5","data":"0111110 1100111\n0000000 0000000"},"fast blink dn":{"name":"fast blink dn","interval":"20","repeat":"5","data":"0111101 0010101\n0000000 0000000\n"},"balance":{"name":"balance","interval":"350","repeat":"5","data":"0000111 0110001\n0000111 0110001\n0000111 0110001\n0000111 0110001\n0010110 0110100\n0010100 0110100\n0010000 0110100\n0000000 0110100\n0000000 0110000\n0000000 0100000\n0000000 0110000\n0000000 0110100\n0010000 0110100\n0010100 0110100\n0010110 0110100\n0000111 0110001\n0010110 0110100\n0010110 0010100\n0010110 0000100\n0010110 0000000\n0000110 0000000\n0000010 0000000\n"}};
+	}
+	
+	
+	for(var a in savedAnimations){
+		var opt = document.createElement('option');
+		opt.innerHTML = a;
+		opt.value = a;
+		savedList.appendChild(opt);
+	}
+	
 	
 	
 };
