@@ -9,6 +9,8 @@ https://victornpb.github.io/7segments/7segments-char.html
 #### Animation Builder
 https://victornpb.github.io/7segments/7segments-anim.html
 
+# Other related stuff
+
 #### Sketch example for running the generated code
 https://github.com/victornpb/display7
 
