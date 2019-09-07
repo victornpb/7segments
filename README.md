@@ -11,3 +11,6 @@ https://victornpb.github.io/7segments/7segments-anim.html
 
 #### Sketch example for running the generated code
 https://github.com/victornpb/display7
+
+#### Arduino sketch that provides multiplexing for a single or multiple 7 segments displays without extra hardware
+https://github.com/victornpb/ledDisp
